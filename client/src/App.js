@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Title, MyNav } from "./components";
+import { Title, MyNav, BookSearchForm, BookSearchResultsContainer } from "./components";
 
 class App extends Component {
   render() {
@@ -8,6 +8,8 @@ class App extends Component {
       <div className="App">
         <MyNav></MyNav>
         <Title></Title>
+        <BookSearchForm></BookSearchForm>
+        <BookSearchResultsContainer></BookSearchResultsContainer>
       </div>
     );
   }
