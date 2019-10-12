@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'reactstrap';
 const BookSearchResultsContainer = (props) => {
   return (
     <Container id='booksearchresultscontainer'>
-      <h1>Results</h1>
+      <h1>{props.containerTitle}</h1>
       {props.children}
     </Container>
   );
