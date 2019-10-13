@@ -3,7 +3,9 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 const mongoose = require('mongoose');
-const routes = require('./routes');
+const axios = require('axios');
+require('dotenv').config()
+// const routes = require('./routes');
  
 mongoose.connect('mongodb://localhost/googlebooks', {
   useNewUrlParser: true,
@@ -19,13 +21,33 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Define API routes here
-app.use(routes);
+// on click query this api https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
+app.get('/scrape', (req, res) => {
+  axios.get("https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=" + process.env.GOOGLE_API_KEY)
+  .then(response => {
+    const booksArray = response.data.items;
+    const scrapedBooks = [];
+    booksArray.forEach(element => {
+      const Book = {
+        title: element.volumeInfo.title,
+        authors: element.volumeInfo.authors,
+        description: element.volumeInfo.description,
+        image: element.volumeInfo.imageLinks,
+        link: element.volumeInfo.infoLink,
+      };
+      scrapedBooks.push(Book);
+    });
+    res.send(scrapedBooks)
+  }) 
+  .catch(err => console.log(err)); 
+})
+
 
 // Send every other request to the React app
 // Define any API routes before this runs
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);

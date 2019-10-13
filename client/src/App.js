@@ -1,9 +1,22 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Title, MyNav, BookSearchForm, BookSearchResultsContainer } from "./components";
+import { Title, MyNav, BookSearchForm, BookSearchResultsContainer, BookCards } from "./components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+// import API from "./utils/API";
 
 class App extends Component {
+
+  state = {
+    books: []
+  };
+  
+
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("/scrape").then(response => response.json()).then(response => this.setState({books: response}))
+  };
+
   render() {
     return (
       <Router>
@@ -13,10 +26,28 @@ class App extends Component {
 
         {/* SEARCH BOOKS ROUTE */}
         <Route exact path='/search'>
-          <BookSearchForm></BookSearchForm>
+          <BookSearchForm
+          onSubmit={this.handleSubmit}> 
+          </BookSearchForm>
           <BookSearchResultsContainer
             containerTitle="Search Results"
-          ></BookSearchResultsContainer>
+            >
+              {this.state.books ? (
+              this.state.books.map(({ title, authors, description, image, link }, index) =>
+              <BookCards
+              key={index}
+              title={title}
+              authors = {authors}
+              description = {description}
+              image = {image}
+              link = {link}
+              saveBook = {(() => this.saveBook())}>
+              </BookCards>
+              )
+              ) : (
+                <h3>No Books to display.</h3>
+              )}
+          </BookSearchResultsContainer>
         </Route>
 
         {/* SAVED BOOKS ROUTE */}
