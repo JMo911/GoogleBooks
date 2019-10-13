@@ -14,7 +14,7 @@ class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    fetch("/scrape").then(response => response.json()).then(response => this.setState({books: response}))
+    fetch("/scrape/").then(response => response.json()).then(response => this.setState({books: response}))
   };
 
   render() {
@@ -25,7 +25,7 @@ class App extends Component {
         <Title></Title>
 
         {/* SEARCH BOOKS ROUTE */}
-        <Route exact path='/search'>
+        <Route path='/search'>
           <BookSearchForm
           onSubmit={this.handleSubmit}> 
           </BookSearchForm>
