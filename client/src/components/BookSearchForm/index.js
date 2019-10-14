@@ -4,9 +4,9 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const BookSearchForm = (props) => {
   return (
-    <Form>>
+    <Form>
       <FormGroup>
-        <Label for="bookInput">Book</Label>
+        <Label for="bookInput">Book Search:</Label>
         <Input type="text" name="bookInput" placeholder="Enter book name here." onChange={props.handleChange} value={props.value}/>
       </FormGroup>
       <Button onClick={props.handleSubmit}>Search</Button>
