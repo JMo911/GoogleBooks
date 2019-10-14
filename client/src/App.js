@@ -7,14 +7,20 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 class App extends Component {
 
   state = {
-    books: []
+    books: [],
+    title: ""
   };
   
-
+handleChange = (e) => {
+  e.preventDefault();
+  this.setState({title: e.target.value});
+}
 
   handleSubmit = (e) => {
+    this.setState({books: [],
+      title: ""})
     e.preventDefault();
-    fetch("/scrape/").then(response => response.json()).then(response => this.setState({books: response}))
+    fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response}))
   };
 
   render() {
@@ -27,7 +33,9 @@ class App extends Component {
         {/* SEARCH BOOKS ROUTE */}
         <Route path='/search'>
           <BookSearchForm
-          onSubmit={this.handleSubmit}> 
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+          value={this.state.title}> 
           </BookSearchForm>
           <BookSearchResultsContainer
             containerTitle="Search Results"

@@ -23,7 +23,8 @@ if (process.env.NODE_ENV === "production") {
 // Define API routes here
 // on click query this api https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
 app.get('/scrape/:title', (req, res) => {
-  axios.get("https://www.googleapis.com/books/v1/volumes?q=" + req.param.title + "&key=" + process.env.GOOGLE_API_KEY)
+  // " + req.param.title + "
+  axios.get("https://www.googleapis.com/books/v1/volumes?q=" + req.params.title+ "&key=" + process.env.GOOGLE_API_KEY)
   .then(response => {
     const booksArray = response.data.items;
     const scrapedBooks = [];
