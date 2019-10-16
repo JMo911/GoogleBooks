@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 require('dotenv').config()
 // const routes = require('./routes');
+const db = require('./models');
  
 mongoose.connect('mongodb://localhost/googlebooks', {
   useNewUrlParser: true,
@@ -33,7 +34,7 @@ app.get('/scrape/:title', (req, res) => {
         title: element.volumeInfo.title,
         authors: element.volumeInfo.authors.join(", "),
         description: element.volumeInfo.description,
-        image: element.volumeInfo.imageLinks,
+        image: element.volumeInfo.imageLinks.smallThumbnail,
         link: element.volumeInfo.infoLink,
       };
       scrapedBooks.push(Book);
@@ -42,6 +43,18 @@ app.get('/scrape/:title', (req, res) => {
   }) 
   .catch(err => console.log(err)); 
 })
+
+app.post('/api/books', (req, res) => {
+  const book = req.body;
+  db.Book.create({ book })
+  .then(function(dbBook) {
+    // console.log(dbBook);
+    res.send(dbBook)
+  })
+  .catch(function(err) {
+    console.log(err.message);
+  });
+});
 
 
 // Send every other request to the React app

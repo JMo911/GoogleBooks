@@ -8,7 +8,8 @@ class App extends Component {
 
   state = {
     books: [],
-    title: ""
+    title: "",
+    id: ""
   };
   
 handleChange = (e) => {
@@ -22,6 +23,23 @@ handleChange = (e) => {
     e.preventDefault();
     fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response}))
   };
+
+  saveBook = (e, index, title, authors, description, image, link) => {
+    e.preventDefault();
+    // console.log(index + '\n' + title + '\n' + authors + '\n' + description + '\n' + image + '\n' + link);
+    const book = {
+      title: title,
+      authors: authors,
+      description: description,
+      image: image,
+      link: link
+    }
+    this.setState({id: index});
+    fetch('/api/books', {
+      method: 'POST',
+      body: JSON.stringify(book)
+    }).then(response => console.log(response));
+  }
 
   render() {
     return (
@@ -49,7 +67,7 @@ handleChange = (e) => {
               description = {description}
               image = {image}
               link = {link}
-              saveBook = {(() => this.saveBook())}>
+              saveBook = {(e) => this.saveBook(e, index, title, authors, description, image, link)}>
               </BookCards>
               )
               ) : (
