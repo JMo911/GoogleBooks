@@ -25,7 +25,6 @@ class App extends Component {
   };
 
   saveBook = (title, authors, description, image, link) => {
-    // e.preventDefault();
     const book = {
       title: title,
       authors: [authors],
@@ -49,12 +48,10 @@ class App extends Component {
       .then( response => {
         // handle success
         const dbBooks = response.data;
-        // console.log(dbBooks);
         const dbStateBooks = [];
         dbBooks.forEach(e => {
           dbStateBooks.push(e);
         });
-        // console.log(dbStateBooks);
         this.setState({ savedBooks: dbStateBooks});
       })
       .catch(function (error) {
@@ -82,7 +79,7 @@ class App extends Component {
           <BookSearchResultsContainer
             containerTitle="Search Results"
             >
-              {this.state.books.length > 2 ? (
+              {this.state.books.length >= 1 ? (
               this.state.books.map(({ title, authors, description, image, link }, index) =>
               <BookCards
               key={index}
