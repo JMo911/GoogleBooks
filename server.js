@@ -75,6 +75,17 @@ app.post('/api/books', (req, res) => {
   });
 });
 
+app.get("/api/books", function(req, res) {
+  // Find all Notes
+  db.GoogleBook.find({})
+    .then(function(dbBook) {
+      res.json(dbBook);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 
 // Send every other request to the React app
 // Define any API routes before this runs

@@ -6,16 +6,16 @@ const axios = require('axios');
 // import API from "./utils/API";
 
 class App extends Component {
-
   state = {
     books: [],
+    savedBooks: [],
     title: ""
   };
   
-handleChange = (e) => {
-  e.preventDefault();
-  this.setState({title: e.target.value});
-}
+  handleChange = (e) => {
+    e.preventDefault();
+    this.setState({title: e.target.value});
+  }
 
   handleSubmit = (e) => {
     this.setState({books: [],
@@ -24,9 +24,8 @@ handleChange = (e) => {
     fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response}))
   };
 
-  saveBook = (e, index, title, authors, description, image, link) => {
+  saveBook = (e, title, authors, description, image, link) => {
     e.preventDefault();
-    // console.log(index + '\n' + title + '\n' + authors + '\n' + description + '\n' + image + '\n' + link);
     const book = {
       title: title,
       authors: [authors],
@@ -34,12 +33,6 @@ handleChange = (e) => {
       image: image,
       link: link
     }
-    // console.log(book);
-
-    // fetch('/api/books', {
-    //   method: 'POST', // or 'PUT'
-    //   body: book, // data can be `string` or {object}!
-    // }).then(response => console.log(response));
 
     axios.post('/api/books', book)
     .then(function (response) {
@@ -50,6 +43,25 @@ handleChange = (e) => {
     });
 
   }
+
+  componentDidMount() {
+      axios.get('/api/books')
+      .then( response => {
+        // handle success
+        const dbBooks = response.data;
+        const dbStateBooks = [];
+        dbBooks.forEach(e => {
+          dbStateBooks.push(e);
+        });
+        // console.log(dbStateBooks);
+        this.setState({ savedBooks: dbStateBooks});
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+  }
+  
   
 
   render() {
@@ -82,16 +94,31 @@ handleChange = (e) => {
               </BookCards>
               )
               ) : (
-                <h3>No Books to display.</h3>
+                <h3>No books to display.</h3>
               )}
           </BookSearchResultsContainer>
         </Route>
 
         {/* SAVED BOOKS ROUTE */}
         <Route exact path='/saved'>
+          {/* {this.retrieveSavedBooks()} */}
           <BookSearchResultsContainer
-            containerTitle="Saved Books"
-          ></BookSearchResultsContainer>
+            containerTitle="Saved Books">
+                          {this.state.savedBooks ? (
+              this.state.savedBooks.map(({ title, authors, description, image, link }, index) =>
+              <BookCards
+              key={index}
+              title={title}
+              authors = {authors}
+              description = {description}
+              image = {image}
+              link = {link}>
+              </BookCards>
+              )
+              ) : (
+                <h3>No saved books to display.</h3>
+              )}
+          </BookSearchResultsContainer>
         </Route>
 
       </Router>
