@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { Title, MyNav, BookSearchForm, BookSearchResultsContainer, BookCards } from "./components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+const axios = require('axios');
 // import API from "./utils/API";
 
 class App extends Component {
@@ -22,6 +23,34 @@ handleChange = (e) => {
     e.preventDefault();
     fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response}))
   };
+
+  saveBook = (e, index, title, authors, description, image, link) => {
+    e.preventDefault();
+    // console.log(index + '\n' + title + '\n' + authors + '\n' + description + '\n' + image + '\n' + link);
+    const book = {
+      title: title,
+      authors: [authors],
+      description: description,
+      image: image,
+      link: link
+    }
+    // console.log(book);
+
+    // fetch('/api/books', {
+    //   method: 'POST', // or 'PUT'
+    //   body: book, // data can be `string` or {object}!
+    // }).then(response => console.log(response));
+
+    axios.post('/api/books', book)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }
+  
 
   render() {
     return (
@@ -49,7 +78,7 @@ handleChange = (e) => {
               description = {description}
               image = {image}
               link = {link}
-              saveBook = {(() => this.saveBook())}>
+              saveBook = {(e) => this.saveBook(e, index, title, authors, description, image, link)}>
               </BookCards>
               )
               ) : (
