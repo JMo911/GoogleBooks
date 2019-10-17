@@ -24,21 +24,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-// db.GoogleBook.create({ 
-//   id: 1,
-//   title: "test",
-//   authors: ["test"],
-//   description: "test",
-//   image: "test",
-//   link: "test"
-//   })
-//   .then(function(dbBook) {
-//     console.log(dbBook);
-//   })
-//   .catch(function(err) {
-//     console.log(err.message);
-//   });
-
 // Define API routes here
 // on click query this api https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
 app.get('/scrape/:title', (req, res) => {

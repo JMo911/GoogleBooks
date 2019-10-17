@@ -21,11 +21,11 @@ class App extends Component {
     this.setState({books: [],
       title: ""})
     e.preventDefault();
-    fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response}))
+    fetch("/scrape/" + this.state.title).then(response => response.json()).then(response => this.setState({books: response})).catch(error => {console.log(error)})
   };
 
-  saveBook = (e, title, authors, description, image, link) => {
-    e.preventDefault();
+  saveBook = (title, authors, description, image, link) => {
+    // e.preventDefault();
     const book = {
       title: title,
       authors: [authors],
@@ -33,10 +33,10 @@ class App extends Component {
       image: image,
       link: link
     }
-
+    // console.log(book);
     axios.post('/api/books', book)
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
     })
     .catch(function (error) {
       console.log(error);
@@ -49,6 +49,7 @@ class App extends Component {
       .then( response => {
         // handle success
         const dbBooks = response.data;
+        // console.log(dbBooks);
         const dbStateBooks = [];
         dbBooks.forEach(e => {
           dbStateBooks.push(e);
@@ -81,7 +82,7 @@ class App extends Component {
           <BookSearchResultsContainer
             containerTitle="Search Results"
             >
-              {this.state.books ? (
+              {this.state.books.length > 2 ? (
               this.state.books.map(({ title, authors, description, image, link }, index) =>
               <BookCards
               key={index}
@@ -90,7 +91,7 @@ class App extends Component {
               description = {description}
               image = {image}
               link = {link}
-              saveBook = {(e) => this.saveBook(e, index, title, authors, description, image, link)}>
+              saveBook = {() => this.saveBook(title, authors, description, image, link)}>
               </BookCards>
               )
               ) : (
@@ -104,7 +105,7 @@ class App extends Component {
           {/* {this.retrieveSavedBooks()} */}
           <BookSearchResultsContainer
             containerTitle="Saved Books">
-                          {this.state.savedBooks ? (
+              {this.state.savedBooks.length >=1 ? (
               this.state.savedBooks.map(({ title, authors, description, image, link }, index) =>
               <BookCards
               key={index}
