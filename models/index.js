@@ -2,6 +2,8 @@
 //     GoogleBook: require("./Book")
 //   };
 
-// import GoogleBook from './Book';
+const GoogleBook = require('./Book');
 
-// module.exports = GoogleBook;
+module.exports = {
+    GoogleBook
+};

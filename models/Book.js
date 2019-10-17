@@ -1,7 +1,8 @@
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
  
-export default GoogleBook = new Schema({
+const GoogleBookSchema = new Schema({
   id: ObjectId,
   title: String,
   authors: Array,
@@ -9,3 +10,7 @@ export default GoogleBook = new Schema({
   image: String,
   link: String
 });
+
+var GoogleBook = mongoose.model("GoogleBook", GoogleBookSchema);
+
+module.exports = GoogleBook;

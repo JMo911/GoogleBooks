@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import "./App.css";
 import { Title, MyNav, BookSearchForm, BookSearchResultsContainer, BookCards } from "./components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+const axios = require('axios');
 // import API from "./utils/API";
 
 class App extends Component {
 
   state = {
     books: [],
-    title: "",
-    id: ""
+    title: ""
   };
   
 handleChange = (e) => {
@@ -29,17 +29,28 @@ handleChange = (e) => {
     // console.log(index + '\n' + title + '\n' + authors + '\n' + description + '\n' + image + '\n' + link);
     const book = {
       title: title,
-      authors: authors,
+      authors: [authors],
       description: description,
       image: image,
       link: link
     }
-    this.setState({id: index});
-    fetch('/api/books', {
-      method: 'POST',
-      body: JSON.stringify(book)
-    }).then(response => console.log(response));
+    // console.log(book);
+
+    // fetch('/api/books', {
+    //   method: 'POST', // or 'PUT'
+    //   body: book, // data can be `string` or {object}!
+    // }).then(response => console.log(response));
+
+    axios.post('/api/books', book)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   }
+  
 
   render() {
     return (

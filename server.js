@@ -7,11 +7,14 @@ const axios = require('axios');
 require('dotenv').config()
 // const routes = require('./routes');
 const db = require('./models');
+
  
 mongoose.connect('mongodb://localhost/googlebooks', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
+
+
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +23,21 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
+
+// db.GoogleBook.create({ 
+//   id: 1,
+//   title: "test",
+//   authors: ["test"],
+//   description: "test",
+//   image: "test",
+//   link: "test"
+//   })
+//   .then(function(dbBook) {
+//     console.log(dbBook);
+//   })
+//   .catch(function(err) {
+//     console.log(err.message);
+//   });
 
 // Define API routes here
 // on click query this api https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
@@ -46,10 +64,11 @@ app.get('/scrape/:title', (req, res) => {
 
 app.post('/api/books', (req, res) => {
   const book = req.body;
-  db.Book.create({ book })
+  console.log(req.body);
+  db.GoogleBook.create(book)
   .then(function(dbBook) {
     // console.log(dbBook);
-    res.send(dbBook)
+    res.json(dbBook);
   })
   .catch(function(err) {
     console.log(err.message);
