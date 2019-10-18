@@ -8,11 +8,9 @@ require('dotenv').config()
 // const routes = require('./routes');
 const db = require('./models');
 
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/googlebooks";
  
-mongoose.connect('mongodb://localhost/googlebooks', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(MONGODB_URI);
 
 
 
