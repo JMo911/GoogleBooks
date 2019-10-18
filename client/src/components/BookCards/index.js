@@ -18,7 +18,7 @@ const BookCards = (props) => {
         {/* <CardText>{props.description}</CardText> */}
         {/* <Button href={'https://na.leagueoflegends.com' + props.href} target='_blank' className='col-sm-4 offset-sm-4'>Read More</Button> */}
         {
-          props.link ?  <Button className="btn btn-info col-sm-4 offset-sm-4" onClick={props.saveBook}>Save Book</Button>: ""
+          (window.location.pathname === "/search") ?  <Button className="btn btn-info col-sm-4 offset-sm-4" onClick={props.saveBook}>Save Book</Button>: ""
         }
         
       </Card>
